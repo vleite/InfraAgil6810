@@ -1,0 +1,55 @@
+---
+- name: Playbook do Side Kid
+  hosts: all
+  vars:
+    usuario: dick_grayson
+  tasks:
+  - name: Verificando Memoria
+    command: free -h
+
+  - name: Verificando usuario
+    shell: cat /etc/passwd | grep vagrant
+
+  - name: Removendo o Apache2
+    apt:
+      name: apache2
+      state: absent
+      update_cache: yes
+    when: ansible_distribution|lower == "ubuntu"
+  
+  - name: Removendo o httpd
+    yum:
+      name: httpd
+      state: absent
+    when: ansible_distribution|lower == "centos"
+
+  - name: Garantir hosts
+    lineinfile:
+     path: /etc/hosts
+     create: yes
+     line: "{{ item }}"
+    loop:
+    - "192.168.99.10 devops.salas4linux.com.br devops"
+    - "192.168.99.20 docker.salas4linux.com.br docker"
+    - "192.168.99.30 automation.salas4linux.com.br automation"
+
+  - name: Criando usuario
+    user: name={{ usuario }} shell=/bin/bash create_home=yes
+
+  - name: Enviando arquivo
+    copy:
+      src: teste.txt
+      dest: /tmp/novo_nome.txt
+
+  - name: Instalar o NGINX
+    package:
+      name: nginx
+      state: present
+    notify: restart
+
+  handlers:
+  - name: restart
+    systemd:
+      name: nginx
+      state: restarted
+...

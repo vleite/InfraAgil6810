@@ -1,0 +1,11 @@
+- name: Parar o Apache
+  systemd:
+    name: apache2
+    state: stopped
+  when: ansible_os_family|lower == "debian"
+
+- name: Remover o Apache
+  package:
+    name: apache2*
+    state: absent
+  when: ansible_os_family|lower == "debian"

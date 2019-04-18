@@ -1,0 +1,21 @@
+- name: Baixando pacote Debian
+  get_url:
+    url: https://apt.puppetlabs.com/puppet6-release-xenial.deb
+    dest: /tmp/puppet
+#  register: nome
+  when: ansible_os_family|lower == "debian"
+
+#- debug:
+#    var: nome.dest
+
+#- shell: export NOME="{{nome.dest}}"
+
+- name: Baixando pacote RPM
+  get_url:
+    url: https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm 
+    dest: /tmp/puppet
+#  register: nome2
+  when: ansible_os_family|lower == "redhat"
+  
+#- debug:
+#    var: nome2.dest

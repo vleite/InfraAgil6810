@@ -1,0 +1,17 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - package:
+      name: ["wget", "curl", "telnet"]
+      state: present
+  - package:
+      name: httpd
+      state: present
+    when: ansible_distribution == 'CentOS'
+  - package:
+      name: apache2
+      state: present
+    when: ansible_distribution != 'CentOS'
+...
+     

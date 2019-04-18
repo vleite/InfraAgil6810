@@ -1,0 +1,61 @@
+---
+- name: Playbook do Robinho
+  hosts: all
+  tasks:
+ 
+  - name: Parar o Nginx
+    systemd:
+      name: nginx
+      state: stopped
+    ignore_errors: True
+  
+  - name: Removendo o nginx
+    package:
+      name: nginx*
+      state: absent
+    ignore_errors: True
+
+  - name: Instalando o Apache
+    package:
+      name: ['apache2', 'libapache2-mod-php7.0', 'php7.0']
+      state: present
+    when: ansible_distribution|lower == "ubuntu"
+    notify: restartApache
+ 
+  - name: Executando o modulo php
+    apache2_module:
+      name: php7.0
+      state: present
+    when: ansible_distribution|lower == "ubuntu"
+    notify: apache2
+
+  - name: Instalando o HTTPD
+    package:
+      name: ["httpd", "php"]
+      state: present
+    when: ansible_distribution|lower == "centos"
+    notify: restartHttpd
+
+  - name: Criando index.php
+    lineinfile:
+      path: /var/www/html/index.php
+      create: yes
+      line: '<?php echo "Desafiador!!" ?>'
+
+  handlers:
+  - name: restartApache
+    systemd:
+      name: apache2
+      state: restarted
+  
+  - name: restartHttpd
+    systemd:
+      name: httpd
+      state: restarted
+  
+  - name: apache2 
+    systemd:
+      name: apache2
+      state: restarted
+...
+

@@ -1,0 +1,11 @@
+- name: Instalando repositorio do puppet no Debian
+  apt:
+    deb: /tmp/puppet
+    state: present
+  ignore_errors: True
+
+- name: Instalando puppet no Debian
+  apt:
+    name: puppet-agent
+    update_cache: yes
+    state: present

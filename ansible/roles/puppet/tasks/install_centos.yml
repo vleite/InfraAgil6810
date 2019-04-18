@@ -1,0 +1,13 @@
+#- name: Verifica variavel
+#  debug:
+#    var: "{{ query('env','NOME')}}"  
+#  when: ansible_os_family|lower == "redhat"
+
+- name: Instalando repositorio puppet no CentOS
+  command: rpm -Uivh /tmp/puppet
+  ignore_errors: True
+
+- name: Instalando puppet no CentOS
+  yum:
+    name: puppet-agent
+    state: present

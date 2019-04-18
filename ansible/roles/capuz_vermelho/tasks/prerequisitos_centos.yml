@@ -1,0 +1,13 @@
+- name: Parar o HTTPD
+  systemd:
+    name: httpd
+    state: stopped
+  when: ansible_os_family|lower == "redhat"
+  ignore_errors: True
+
+- name: Remover o HTTPD
+  package:
+    name: httpd*
+    state: absent
+  when: ansible_os_family|lower == "redhat"
+  ignore_errors: True

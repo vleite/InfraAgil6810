@@ -1,0 +1,23 @@
+- name: Página HTML
+  template:
+    src: index.html
+    dest: /var/www/html/index.html
+  when: ansible_os_family|lower == "debian" 
+
+- name: 
+  get_url:     
+    url: https://storage.googleapis.com/adm-portal.appspot.com/_assets/files/2012/05/file_5627.jpg
+    dest: /var/www/html/imagem.jpg
+  when: ansible_os_family|lower == "debian" 
+
+- name: Página HTML
+  template:
+    src: index.html
+    dest: /usr/share/nginx/html/index.html
+  when: ansible_os_family|lower == "redhat" 
+
+- name: 
+  get_url:     
+    url: https://storage.googleapis.com/adm-portal.appspot.com/_assets/files/2012/05/file_5627.jpg
+    dest: /usr/share/nginx/html/imagem.jpg
+  when: ansible_os_family|lower == "redhat" 

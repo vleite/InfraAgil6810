@@ -1,0 +1,9 @@
+---
+# tasks file for puppet
+- include: prerequisitos.yml
+- include: install_centos.yml
+  when: ansible_os_family|lower == "redhat"
+- include: prerequisitos.yml
+- include: install_ubuntu.yml
+  when: ansible_os_family|lower == "debian"
+
